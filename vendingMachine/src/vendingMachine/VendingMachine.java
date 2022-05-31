@@ -73,7 +73,7 @@ class Controller {
 			//System.out.println("manager들(cm, im, wm)의 체크"); 			System.out.println(cm.checkAvailibility());			System.out.println(im.checkAvailibility(selection));			System.out.println(wm.checkAvailibility(selection));
 			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
 				Manufacture mf = new Manufacture();
-				System.out.print("Manufacture 체크: ");mf.getRequestManufacture();
+				System.out.print("Manufacture 체크: ");mf.getRequestManufacture(this.selection);
 			}
 			
 		}
@@ -137,24 +137,31 @@ class CupManager {
 }
 
 class IngredientManager {
-	int SpecialCoffee = 1;
-	int PlainCoffee = 5;
-	int BlackCoffee  = 10;
+	int SpecialCoffeeCount = 1;
+	int PlainCoffeeCount = 5;
+	int BlackCoffeeCount  = 10;
+	//String selection;
 	
 	boolean checkAvailibility(String selection) {
-		if (SpecialCoffee>=1) return true;
-		else if (PlainCoffee>=1) return true;
-		else if (BlackCoffee>=1) return true;
+		if (SpecialCoffeeCount>=1) return true;
+		else if (PlainCoffeeCount>=1) return true;
+		else if (BlackCoffeeCount>=1) return true;
 		else {return false;}
 	}
 	
-	int getOrderIngredient() {
+	int getOrderIngredient(String selection) {
+		//this.selection=selection;
 		System.out.println("IngredientManager는 Manufacture에게 Ingredient을 준다.");
-		//if (selection.equals("SpecialCoffee")) { SpecialCoffee--; }
-		//else if (selection.equals("PlainCoffee")) { PlainCoffee--; }
-		//else if (selection.equals("BlackCoffee")) { BlackCoffee--; }
+		if (selection.equals("SpecialCoffee")) { SpecialCoffeeCount--; }
+		else if (selection.equals("PlainCoffee")) { PlainCoffeeCount--; }
+		else if (selection.equals("BlackCoffee")) { BlackCoffeeCount--; }
+		
 		return 1;
 	}
+	
+	int getSpecialCoffeeCount() {return SpecialCoffeeCount;}
+	int getPlainCoffeeCount() {return PlainCoffeeCount;}
+	int getBlackCoffeeCount() {return BlackCoffeeCount;}
 }
 
 class WaterManager {
@@ -167,10 +174,21 @@ class WaterManager {
 }
 
 class Manufacture {
-	void getRequestManufacture() {
-		System.out.println("제조했다");
+	String selection;
+	void getRequestManufacture(String selection) {
+		this.selection=selection;
+		System.out.print("제조요청을 받았다. selection 출력: "); System.out.println(selection);
+		
 		CupManager cm = new CupManager();   //또 객체생성하면 안될 것 같음.
-		System.out.print(cm.getOrderCup()); System.out.print("개의 컵을 받았다.");
+		System.out.print(cm.getOrderCup()); System.out.println("개의 컵을 받았다.\n");
+		
+		IngredientManager im = new IngredientManager();
+		System.out.print(im.getOrderIngredient(this.selection));	System.out.println("개의 재료를 받았다.");
+		System.out.print(im.getSpecialCoffeeCount());	System.out.print("개 SpecialCoffee가 남았다. / ");
+		System.out.print(im.getPlainCoffeeCount());	System.out.print("개 PlainCoffee가 남았다. / ");
+		System.out.print(im.getBlackCoffeeCount());	System.out.println("개 BlackCoffee가 남았다.");
+		
+		
 	}
 }
 
@@ -178,4 +196,5 @@ class CoffeeDispenser {
 	//void getCup() { System.out.println("CoffeeDispenser은 CupManager로부터 cup을 받았다"); }
 	//void getIngerdient() { System.out.println("CoffeeDispenser은 CupManager로부터 Ingerdient을 받았다"); }
 	//void getWater() { System.out.println("CoffeeDispenser은 CupManager로부터 water을 받았다"); }
+	
 }
