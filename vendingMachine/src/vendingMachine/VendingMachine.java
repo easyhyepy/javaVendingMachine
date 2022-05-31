@@ -54,6 +54,8 @@ class UserPanel {
 	
 	void receiveCoffee(String selection) {
 		System.out.print(selection); System.out.println(" 커피가 나왔다.");
+		//MoneyManager m = new MoneyManager();
+		//m.setFinishFalse();
 	}
 	
 	void change(int change) { System.out.print(change); System.out.println("원의 잔돈이 UserPanel에 반환되었다.");}
@@ -100,6 +102,9 @@ class MoneyManager {
 	int balance=4000;	//잔액
 	boolean availibility;
 	
+	//boolean notFinish = true;
+	//void setFinishFalse() {this.notFinish = false;}
+	
 	boolean checkAvailibilityOfChangesAndAboveprice(int cash, String selection) {		//잔액만 확인하는게 아니라 투입금액>=물품가액도 확인해야 & 마지막 else부분은 없는 문자열로 잘못 입력한겅미
 		if (selection.equals("SpecialCoffee")) {
 			if(cash>=2000) {
@@ -127,10 +132,16 @@ class MoneyManager {
 		else if (selection.equals("BlackCoffee")) {  balance += 1500; }
 		
 		//아마 여기서 change 호출해야할듯.
+		
+		
+		//while (notFinish){  //MoneyManager의 notFinish와 setFinishiFalse()로 잔돈 반환을 늦추려했으나 실패. 그래서 걍 주석해두겠음. UserPanel의 setFinishFalse()도 마찬가지로 주석해둠
 		UserPanel u = new UserPanel();
+
 		if (selection.equals("SpecialCoffee")) { u.change(cash-2000); }
 		else if (selection.equals("PlainCoffee")) { u.change(cash-1000); }
 		else if (selection.equals("BlackCoffee")) { u.change(cash-1500); }
+
+		//}
 		
 	}
 	void getBalance() { System.out.print("자판기 잔고확인: "); System.out.println(this.balance); }
@@ -223,6 +234,7 @@ class CoffeeDispenser {
 		System.out.println("CoffeeDispenser은 컵과 재료와 물을 받았고, 이를 섞는다.\n");
 		UserPanel u = new UserPanel(); 
 		u.receiveCoffee(selection);
+		
 	}
 	
 }
