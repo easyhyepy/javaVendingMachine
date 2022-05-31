@@ -1,114 +1,82 @@
 package vendingMachine;
-
 import java.util.Scanner;
 
 public class VendingMachine {
 
+	static void displayVM() {
+		System.out.println( "---------------------------------------------\n| SpecialCoffee | PlainCoffee | BlackCoffee |\n|      2000     |    1000     |    1500     |\n---------------------------------------------\n\n\n금액과 선택 입력하세요:");
+	}
+	
 	public static void main(String[] args) {
 		String selection="";
 		int cash=0;
 		
 		//입력받기
-		System.out.print("금액과 선택 입력하세요:");
+		displayVM();
 		Scanner sc = new Scanner(System.in);
 		cash = sc.nextInt();
 		selection = sc.next();
 		
+		//User가 돈과 선택을 넣음.
 		UserPanel U = new UserPanel();
 		U.accept(cash, selection);
-		U.getCash();
-		U.getSelection();
-		U.getDisplayPharase();
-		
+		System.out.println("U출력입니다"); U.getCash();  U.getSelection(); //확인 완료
 		
 	}
+	
 }
 
 class UserPanel {
-	  
-	void accept(int cash, String seletion) {
+	int cash;
+	String selection;
+	int change;  //잔돈
+	String displayPharase = "화면출력입니다";	//화면 출력
+	
+	void accept(int cash, String selection) {
 		this.cash = cash;
-		this.seletion = seletion;
+		this.selection = selection;
+		Controller c = new Controller();
+		c.getUserInput(this.cash, this.selection);
+		
+		System.out.println("c출력입니다"); 
+		c.getCash();
+		c.getSelection();
+		
 	}
 	
 	void setDisplayPharase(String displayPharase) { this.displayPharase = displayPharase; }
-	//void receiveCoffee(String seletion)
+	//void receiveCoffee(String selection)
 	//void receiveChange(String change);
 
 	void getCash() { System.out.println(this.cash); }
-	void getSelection() { System.out.println(seletion); }
-	void getDisplayPharase() { System.out.println(displayPharase); }
+	void getSelection() { System.out.println(this.selection); }
+	void getDisplayPharase() { System.out.println(this.displayPharase); }
 	
-	int cash =0;
-	String seletion = "";
-	int change=0;  //잔돈
-	String displayPharase = "화면출력입니다";	//화면 출력
 	
-	Controller c = new Controller();
-	void NAEMAM() { c.naemam(); }
+	
+	
 		
 }
 
 class Controller {
 
 	Controller() {
-		System.out.println("컨트롤러 기본생성자");
 	}
-	Controller(int cash) {
+	
+	int cash;
+	String selection;
+	String recipe;
+	
+
+	void getUserInput(int cash, String seletion) {
 		this.cash = cash;
-		System.out.println(cash);
+		this.selection = seletion;
 	}
+	
+	//void getRecipe(String selection);
 
-	//void getUserInput(int cash, String seletion);
-	//void getRecipe(String seletion);
-	void naemam() { System.out.println("내맘대로" );}
-
-
-	int cash = 0;
-	String selection = "선택";
-	String recipe = "레시피";
+	void getCash() { System.out.println(this.cash); }
+	void getSelection() { System.out.println(this.selection); }
+	
+	
 }
-
-
-
-/*
- public class vendingMachine {
-
-	public static void main(String[] args) {
-		Computer computer = new Computer();
-		int file=1;
-		computer.print(file);
-	}
-}
-
-class Computer {
-	PrinterServer printServer = new PrinterServer(); // 프린터서버를 가리킴
-	void print (int file) { // computer에게 온 Print (file)에 대응
-		printServer.print (file); // PrinterServer에게 Print (file)을 명령함.
-	}
-}
-
-class PrinterServer {
-	Printer printer = new Printer (); // 프린터를 가리킴
-	Queue queue = new Queue (); // 큐를 가리킴
-	void print (int file) { // computer가 명령한 print (File)에 대응
-		if ( printer.isBusy() == 1) // 만약 프린터가 사용 불가능하면
-			queue.store(file); // Queue에거I store (File)을 명령합
-		else // 프린트가 사용 가능하면
-			printer.print(file); // Printer에게 print (file)을 명령합.
-		}
-}
-
-class Printer {
-	void print(int file) {
-		System.out.println("Printer.print 출력");
-	}
-	int isBusy() { return 1;}
-}
-
-class Queue{
-	void store(int file) {
-		System.out.println("Queue.store 출력");
-	}
-}
-*/
