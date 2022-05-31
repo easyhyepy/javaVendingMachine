@@ -171,6 +171,12 @@ class WaterManager {
 		if (amountOfWater>=150) return true;		//레시피 따라서 해도 될듯
 		else {return false;}
 	}
+	
+	int getOrderWater() {
+		amountOfWater-=150;
+		return 150;
+	}
+	int getAmountOfWater() {return amountOfWater;}
 }
 
 class Manufacture {
@@ -185,9 +191,12 @@ class Manufacture {
 		IngredientManager im = new IngredientManager();
 		System.out.print(im.getOrderIngredient(this.selection));	System.out.println("개의 재료를 받았다.");
 		System.out.print(im.getSpecialCoffeeCount());	System.out.print("개 SpecialCoffee가 남았다. / ");
-		System.out.print(im.getPlainCoffeeCount());	System.out.print("개 PlainCoffee가 남았다. / ");
-		System.out.print(im.getBlackCoffeeCount());	System.out.println("개 BlackCoffee가 남았다.");
+		System.out.print(im.getPlainCoffeeCount());		System.out.print("개 PlainCoffee가 남았다. / ");
+		System.out.print(im.getBlackCoffeeCount());		System.out.println("개 BlackCoffee가 남았다.\n");
 		
+		WaterManager wm = new WaterManager();
+		System.out.print(wm.getOrderWater());			System.out.println("ml의 물을 받았다.");
+		System.out.print(wm.getAmountOfWater());		System.out.println("ml의 물이 WaterManger에 남아있다.");
 		
 	}
 }
