@@ -54,13 +54,10 @@ class UserPanel {
 
 class Controller {
 
-	Controller() {
-	}
+
 	
 	int cash;
-	String selection;
-	String recipe;
-	
+	String selection;	
 
 	void getUserInput(int cash, String seletion) {
 		this.cash = cash;
@@ -69,8 +66,10 @@ class Controller {
 		MoneyManager m = new MoneyManager();
 		//System.out.println("잔액있는지, 그리고 투입금액 이상인지 확인"); 		System.out.println(m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection));
 		if (m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection)) {
-			
+			m.updateBalance(cash,selection);
+			m.getBalance();
 		}
+		else {System.out.println("sys balance 업데이트 안됨. 즉 사용자가 입력한 금액 문제있는겨 -> 오류 메시지 띄워야"); m.getBalance();}
 		
 	}
 	
@@ -85,7 +84,7 @@ class MoneyManager {
 	int balance=4000;	//잔액
 	boolean availibility;
 	
-	boolean checkAvailibilityOfChangesAndAboveprice(int cash, String selection) {		//잔액만 확인하는게 아니라 투입금액>=물품가액도 확인해야
+	boolean checkAvailibilityOfChangesAndAboveprice(int cash, String selection) {		//잔액만 확인하는게 아니라 투입금액>=물품가액도 확인해야 & 마지막 else부분은 없는 문자열로 잘못 입력한겅미
 		if (selection.equals("SpecialCoffee")) {
 			if(cash>=2000) {
 				availibility = (balance>=cash-2000)?true:false;
@@ -101,10 +100,17 @@ class MoneyManager {
 				availibility = (balance>=cash-1500)?true:false;
 			} else availibility=false;
 		}
+		else availibility=false;	//선택 잘못한 경우
+		
 		return availibility;
 	}
 	
-	//void updateBalance(int cash, int price);
-	//void getBalance();
+	void updateBalance(int cash, String selection) {
+		if (selection.equals("SpecialCoffee")) { balance -= (cash-2000); }
+		else if (selection.equals("PlainCoffee")) { balance -= (cash-1000); }
+		else if (selection.equals("BlackCoffee")) { balance -= (cash-1500); }
+			
+	}
+	void getBalance() { System.out.println("자판기 잔고확인"); System.out.println(this.balance); }
 		
 };
