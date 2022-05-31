@@ -66,8 +66,19 @@ class Controller {
 		if (m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection)) {
 			m.updateBalance(cash,selection);
 			m.getBalance();
+			
+			CupManager cm = new CupManager();
+			IngredientManager im = new IngredientManager();
+			WaterManager wm = new WaterManager();
+			//System.out.println("manager들(cm, im, wm)의 체크"); 			System.out.println(cm.checkAvailibility());			System.out.println(im.checkAvailibility(selection));			System.out.println(wm.checkAvailibility(selection));
+			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
+				Manufacture mf = new Manufacture();
+				//System.out.println("Manufacture 체크");mf.getRequestManufacture();
+			}
+			
 		}
 		else {System.out.println("sys balance 업데이트 안됨. 즉 사용자가 입력한 금액 문제있는겨 -> 오류 메시지 띄워야"); m.getBalance();}
+	
 		
 	}
 	
@@ -140,4 +151,8 @@ class WaterManager {
 		if (amountOfWater>=150) return true;		//레시피 따라서 해도 될듯
 		else {return false;}
 	}
+}
+
+class Manufacture {
+	void getRequestManufacture() {System.out.println("제조했다");}
 }
