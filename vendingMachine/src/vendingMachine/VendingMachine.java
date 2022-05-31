@@ -20,8 +20,7 @@ public class VendingMachine {
 		U.getSelection();
 		U.getDisplayPharase();
 		
-		Controller c = new Controller();
-		System.out.println(c.naemam());
+		
 	}
 }
 
@@ -44,6 +43,9 @@ class UserPanel {
 	String seletion = "";
 	int change=0;  //잔돈
 	String displayPharase = "화면출력입니다";	//화면 출력
+	
+	Controller c = new Controller();
+	void NAEMAM() { c.naemam(); }
 		
 }
 
@@ -59,7 +61,7 @@ class Controller {
 
 	//void getUserInput(int cash, String seletion);
 	//void getRecipe(String seletion);
-	int naemam() { return 123; }
+	void naemam() { System.out.println("내맘대로" );}
 
 
 	int cash = 0;
