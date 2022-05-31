@@ -56,6 +56,7 @@ class UserPanel {
 		System.out.print(selection); System.out.println(" 커피가 나왔다.");
 	}
 	
+	void change(int change) { System.out.print(change); System.out.println("원의 잔돈이 UserPanel에 반환되었다.");}
 }
 
 class Controller {
@@ -124,6 +125,13 @@ class MoneyManager {
 		if (selection.equals("SpecialCoffee")) { balance += 2000; }
 		else if (selection.equals("PlainCoffee")) { balance += 1000; }
 		else if (selection.equals("BlackCoffee")) {  balance += 1500; }
+		
+		//아마 여기서 change 호출해야할듯.
+		UserPanel u = new UserPanel();
+		if (selection.equals("SpecialCoffee")) { u.change(cash-2000); }
+		else if (selection.equals("PlainCoffee")) { u.change(cash-1000); }
+		else if (selection.equals("BlackCoffee")) { u.change(cash-1500); }
+		
 	}
 	void getBalance() { System.out.print("자판기 잔고확인: "); System.out.println(this.balance); }
 		
