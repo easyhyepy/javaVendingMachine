@@ -20,7 +20,7 @@ public class VendingMachine {
 		//User가 돈과 선택을 넣음.
 		UserPanel U = new UserPanel();
 		U.accept(cash, selection);
-		System.out.println("U출력입니다"); U.getCash();  U.getSelection(); //확인 완료
+		//System.out.println("U출력입니다"); U.getCash();  U.getSelection(); //확인 완료
 		
 	}
 	
@@ -38,9 +38,7 @@ class UserPanel {
 		Controller c = new Controller();
 		c.getUserInput(this.cash, this.selection);
 		
-		System.out.println("c출력입니다"); 
-		c.getCash();
-		c.getSelection();
+		// System.out.println("c출력입니다"); 		c.getCash();		c.getSelection();
 		
 	}
 	
@@ -52,10 +50,6 @@ class UserPanel {
 	void getSelection() { System.out.println(this.selection); }
 	void getDisplayPharase() { System.out.println(this.displayPharase); }
 	
-	
-	
-	
-		
 }
 
 class Controller {
@@ -71,6 +65,12 @@ class Controller {
 	void getUserInput(int cash, String seletion) {
 		this.cash = cash;
 		this.selection = seletion;
+		
+		MoneyManager m = new MoneyManager();
+		System.out.println("잔액있는지, 그리고 투입금액 이상인지 확인"); 		System.out.println(m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection));
+		if (m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection)) {
+			
+		}
 	}
 	
 	//void getRecipe(String selection);
@@ -78,5 +78,34 @@ class Controller {
 	void getCash() { System.out.println(this.cash); }
 	void getSelection() { System.out.println(this.selection); }
 	
-	
 }
+
+class MoneyManager {
+	int balance=4000;	//잔액
+	boolean availibility;
+	
+	boolean checkAvailibilityOfChangesAndAboveprice(int cash, String selection) {		//잔액만 확인하는게 아니라 투입금액>=물품가액도 확인해야
+		if (selection.equals("SpecialCoffee")) {
+			if(cash>=2000) {
+				availibility = (balance>=cash-2000)?true:false;
+			} else availibility=false;
+		}
+		else if (selection.equals("PlainCoffee")) {
+			if(cash>=1000) {
+				availibility = (balance>=cash-1000)?true:false;
+			} else availibility=false;
+		}
+		else if (selection.equals("BlackCoffee")) {
+			if(cash>=1000) {
+				availibility = (balance>=cash-1500)?true:false;
+			} else availibility=false;
+		}
+		return availibility;
+	}
+	//void updateBalance(int cash, int price);
+	//void getBalance();
+	
+	
+
+		
+};
