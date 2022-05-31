@@ -73,7 +73,7 @@ class Controller {
 			//System.out.println("manager들(cm, im, wm)의 체크"); 			System.out.println(cm.checkAvailibility());			System.out.println(im.checkAvailibility(selection));			System.out.println(wm.checkAvailibility(selection));
 			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
 				Manufacture mf = new Manufacture();
-				//System.out.println("Manufacture 체크");mf.getRequestManufacture();
+				System.out.print("Manufacture 체크: ");mf.getRequestManufacture();
 			}
 			
 		}
@@ -119,7 +119,7 @@ class MoneyManager {
 		else if (selection.equals("PlainCoffee")) { balance += 1000; }
 		else if (selection.equals("BlackCoffee")) {  balance += 1500; }
 	}
-	void getBalance() { System.out.println("자판기 잔고확인"); System.out.println(this.balance); }
+	void getBalance() { System.out.print("자판기 잔고확인: "); System.out.println(this.balance); }
 		
 }
 
@@ -128,6 +128,9 @@ class CupManager {
 	boolean checkAvailibility() {
 		if (cupCount>=1) return true;
 		else {return false;}
+	}
+	void getOrderCup() {
+		System.out.println("CupManager는 Manufacture에게 컵을 준다.");
 	}
 }
 
@@ -154,5 +157,10 @@ class WaterManager {
 }
 
 class Manufacture {
-	void getRequestManufacture() {System.out.println("제조했다");}
+	void getRequestManufacture() {
+		System.out.println("제조했다");
+		CupManager cm2 = new CupManager();
+		cm2.getOrderCup();
+	}
 }
+
