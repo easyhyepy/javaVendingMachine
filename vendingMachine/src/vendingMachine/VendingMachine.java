@@ -106,11 +106,10 @@ class MoneyManager {
 	}
 	
 	void updateBalance(int cash, String selection) {
-		if (selection.equals("SpecialCoffee")) { balance -= (cash-2000); }
-		else if (selection.equals("PlainCoffee")) { balance -= (cash-1000); }
-		else if (selection.equals("BlackCoffee")) { balance -= (cash-1500); }
-			
+		if (selection.equals("SpecialCoffee")) { balance += 2000; }
+		else if (selection.equals("PlainCoffee")) { balance += 1000; }
+		else if (selection.equals("BlackCoffee")) {  balance += 1500; }
 	}
 	void getBalance() { System.out.println("자판기 잔고확인"); System.out.println(this.balance); }
 		
-};
+}
