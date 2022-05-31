@@ -129,8 +129,10 @@ class CupManager {
 		if (cupCount>=1) return true;
 		else {return false;}
 	}
-	void getOrderCup() {
+	int getOrderCup() {
 		System.out.println("CupManager는 Manufacture에게 컵을 준다.");
+		cupCount--;
+		return 1;
 	}
 }
 
@@ -144,6 +146,14 @@ class IngredientManager {
 		else if (PlainCoffee>=1) return true;
 		else if (BlackCoffee>=1) return true;
 		else {return false;}
+	}
+	
+	int getOrderIngredient() {
+		System.out.println("IngredientManager는 Manufacture에게 Ingredient을 준다.");
+		//if (selection.equals("SpecialCoffee")) { SpecialCoffee--; }
+		//else if (selection.equals("PlainCoffee")) { PlainCoffee--; }
+		//else if (selection.equals("BlackCoffee")) { BlackCoffee--; }
+		return 1;
 	}
 }
 
@@ -159,8 +169,13 @@ class WaterManager {
 class Manufacture {
 	void getRequestManufacture() {
 		System.out.println("제조했다");
-		CupManager cm2 = new CupManager();
-		cm2.getOrderCup();
+		CupManager cm = new CupManager();   //또 객체생성하면 안될 것 같음.
+		System.out.print(cm.getOrderCup()); System.out.print("개의 컵을 받았다.");
 	}
 }
 
+class CoffeeDispenser {
+	//void getCup() { System.out.println("CoffeeDispenser은 CupManager로부터 cup을 받았다"); }
+	//void getIngerdient() { System.out.println("CoffeeDispenser은 CupManager로부터 Ingerdient을 받았다"); }
+	//void getWater() { System.out.println("CoffeeDispenser은 CupManager로부터 water을 받았다"); }
+}
