@@ -54,8 +54,6 @@ class UserPanel {
 
 class Controller {
 
-
-	
 	int cash;
 	String selection;	
 
@@ -112,4 +110,34 @@ class MoneyManager {
 	}
 	void getBalance() { System.out.println("자판기 잔고확인"); System.out.println(this.balance); }
 		
+}
+
+class CupManager {
+	int cupCount = 10;
+	boolean checkAvailibility() {
+		if (cupCount>=1) return true;
+		else {return false;}
+	}
+}
+
+class IngredientManager {
+	int SpecialCoffee = 1;
+	int PlainCoffee = 5;
+	int BlackCoffee  = 10;
+	
+	boolean checkAvailibility(String selection) {
+		if (SpecialCoffee>=1) return true;
+		else if (PlainCoffee>=1) return true;
+		else if (BlackCoffee>=1) return true;
+		else {return false;}
+	}
+}
+
+class WaterManager {
+	int amountOfWater=1000;	//ml단위
+	
+	boolean checkAvailibility(String selection) {
+		if (amountOfWater>=150) return true;		//레시피 따라서 해도 될듯
+		else {return false;}
+	}
 }
