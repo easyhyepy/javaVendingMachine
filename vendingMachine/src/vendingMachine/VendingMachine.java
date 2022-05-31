@@ -50,6 +50,12 @@ class UserPanel {
 	void getSelection() { System.out.println(this.selection); }
 	void getDisplayPharase() { System.out.println(this.displayPharase); }
 	
+	
+	
+	void receiveCoffee(String selection) {
+		System.out.print(selection); System.out.println(" 커피가 나왔다.");
+	}
+	
 }
 
 class Controller {
@@ -196,14 +202,19 @@ class Manufacture {
 		
 		WaterManager wm = new WaterManager();
 		System.out.print(wm.getOrderWater());			System.out.println("ml의 물을 받았다.");
-		System.out.print(wm.getAmountOfWater());		System.out.println("ml의 물이 WaterManger에 남아있다.");
+		System.out.print(wm.getAmountOfWater());		System.out.println("ml의 물이 WaterManger에 남아있다.\n");
+		
+		CoffeeDispenser cd = new CoffeeDispenser();
+		cd.getMixed(selection);
 		
 	}
 }
 
 class CoffeeDispenser {
-	//void getCup() { System.out.println("CoffeeDispenser은 CupManager로부터 cup을 받았다"); }
-	//void getIngerdient() { System.out.println("CoffeeDispenser은 CupManager로부터 Ingerdient을 받았다"); }
-	//void getWater() { System.out.println("CoffeeDispenser은 CupManager로부터 water을 받았다"); }
+	void getMixed(String selection) { 
+		System.out.println("CoffeeDispenser은 컵과 재료와 물을 받았고, 이를 섞는다.\n");
+		UserPanel u = new UserPanel(); 
+		u.receiveCoffee(selection);
+	}
 	
 }
