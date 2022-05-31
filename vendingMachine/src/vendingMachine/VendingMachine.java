@@ -67,10 +67,11 @@ class Controller {
 		this.selection = seletion;
 		
 		MoneyManager m = new MoneyManager();
-		System.out.println("잔액있는지, 그리고 투입금액 이상인지 확인"); 		System.out.println(m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection));
+		//System.out.println("잔액있는지, 그리고 투입금액 이상인지 확인"); 		System.out.println(m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection));
 		if (m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection)) {
 			
 		}
+		
 	}
 	
 	//void getRecipe(String selection);
@@ -102,10 +103,8 @@ class MoneyManager {
 		}
 		return availibility;
 	}
+	
 	//void updateBalance(int cash, int price);
 	//void getBalance();
-	
-	
-
 		
 };
