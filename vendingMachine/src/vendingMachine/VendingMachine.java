@@ -22,6 +22,7 @@ public class VendingMachine {
 		U.accept(cash, selection);
 		//System.out.println("U출력입니다"); U.getCash();  U.getSelection(); //확인 완료
 		
+		U.receiveCoffee(selection);
 	}
 	
 }
@@ -100,7 +101,8 @@ class Controller {
 			//System.out.println("manager들(cm, im, wm)의 체크"); 			System.out.println(cm.checkAvailibility());			System.out.println(im.checkAvailibility(selection));			System.out.println(wm.checkAvailibility(selection));
 			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
 				Manufacture mf = new Manufacture();
-				System.out.print("Manufacture 체크: ");mf.getRequestManufacture(this.selection);
+				System.out.print("Manufacture 체크: ");
+				mf.getRequestManufacture(this.selection);
 			}	
 		}
 		
@@ -188,6 +190,9 @@ class CupManager {
 		cupCount--;
 		return 1;
 	}
+	int getCupCount() {
+		return this.cupCount;
+	}
 }
 
 
@@ -245,13 +250,14 @@ class Manufacture {
 		System.out.print("제조요청을 받았다. selection 출력: "); System.out.println(selection);
 		
 		CupManager cm = new CupManager();   //또 객체생성하면 안될 것 같음.
-		System.out.print(cm.getOrderCup()); System.out.println("개의 컵을 받았다.\n");
+		System.out.print(cm.getOrderCup()); 			System.out.println("개의 컵을 받았다.");
+		System.out.print(cm.getCupCount());				System.out.println("개의 컵이 남아있다.\n");
 		
 		IngredientManager im = new IngredientManager();
 		System.out.print(im.getOrderIngredient(this.selection));	System.out.println("개의 재료를 받았다.");
-		System.out.print(im.getSpecialCoffeeCount());	System.out.print("개 SpecialCoffee가 남았다. / ");
-		System.out.print(im.getPlainCoffeeCount());		System.out.print("개 PlainCoffee가 남았다. / ");
-		System.out.print(im.getBlackCoffeeCount());		System.out.println("개 BlackCoffee가 남았다.\n");
+		System.out.print(im.getSpecialCoffeeCount());	System.out.print("개 SpecialCoffee가 남아있다. / ");
+		System.out.print(im.getPlainCoffeeCount());		System.out.print("개 PlainCoffee가 남아있다. / ");
+		System.out.print(im.getBlackCoffeeCount());		System.out.println("개 BlackCoffee가 남아있다.\n");
 		
 		WaterManager wm = new WaterManager();
 		System.out.print(wm.getOrderWater());			System.out.println("ml의 물을 받았다.");
@@ -276,8 +282,8 @@ class CoffeeDispenser {
 		this.water = true;
 		
 		System.out.println("\nCoffeeDispenser은 컵과 재료와 물을 받았고, 이를 섞는다.\n");
-		UserPanel u = new UserPanel(); 
-		u.receiveCoffee(selection);
+		//UserPanel u = new UserPanel(); 	-> 맞는지 모르겠는데 main으로 코드 옮겼더니 출력순서 똑같아.
+		//u.receiveCoffee(selection);
 		
 	}
 }
