@@ -19,8 +19,7 @@ public class VendingMachine {
 		int cash=0;
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.print("사용자면 0, 관리자면 1을 입력하세요: ");  	int num = sc.nextInt();
-		User_VS_Manager check = new User_VS_Manager(); 			check.setNum(num);	System.out.print(check.user_VS_manager()); System.out.println("사용자매니저체크크크");		//관리자모드로 작동한다~웅앵 띄우셈. 여기서부터가 진짜 자판기 작동입니다.도
+		
 		displayVM();
 		
 		System.out.print("금액과 선택 입력하세요: ");
