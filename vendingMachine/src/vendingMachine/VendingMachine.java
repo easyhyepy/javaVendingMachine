@@ -4,10 +4,13 @@ import java.util.Scanner;
 public class VendingMachine {
 
 	static void displayVM() {
-		System.out.print( "---------------------------------------------\n| SpecialCoffee | PlainCoffee | BlackCoffee |\n|      2000     |    1000     |    1500     |\n---------------------------------------------\n\n\n금액과 선택 입력하세요:");
+		System.out.print( "---------------------------------------------\n"
+				+ "| SpecialCoffee | PlainCoffee | BlackCoffee |\n|      2000     |    1000     |    1500     |\n"
+				+ "---------------------------------------------\n\n\n금액과 선택 입력하세요:");
 	}
 	
 	public static void main(String[] args) {
+		
 		String selection="";
 		int cash=0;
 		
@@ -29,6 +32,7 @@ public class VendingMachine {
 
 
 class UserPanel {
+	
 	int cash;
 	String selection;
 	int change;  //잔돈
@@ -58,6 +62,7 @@ class UserPanel {
 	void receiveChange(int change) { 
 		System.out.print(change); System.out.println("원의 잔돈이 UserPanel에 반환되었다.");
 	}
+	
 }
 
 
@@ -310,8 +315,7 @@ class CoffeeDispenser {
 		this.water = true;
 		System.out.println("\nCoffeeDispenser은 컵과 재료와 물을 받았고, 이를 섞는다.\n");
 		
-		oi.turnLED_Off();
-		
+		oi.turnLED_Off();		
 		
 		//UserPanel U = new UserPanel();
 		u.receiveCoffee(selection);
