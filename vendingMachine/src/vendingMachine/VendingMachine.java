@@ -1,22 +1,29 @@
 package vendingMachine;
 import java.util.Scanner;
 
-public class VendingMachine {
 
+
+public class VendingMachine {
+	
 	static void displayVM() {
-		System.out.print( "---------------------------------------------\n"
-				+ "| SpecialCoffee | PlainCoffee | BlackCoffee |\n|      2000     |    1000     |    1500     |\n"
-				+ "---------------------------------------------\n\n\n금액과 선택 입력하세요:");
+		System.out.println(
+				"\n---------------------------------------------\n"
+				+ "| SpecialCoffee | PlainCoffee | BlackCoffee |\n"
+				+ "|      2000     |    1000     |    1500     |\n"
+				+ "---------------------------------------------\n\n");
 	}
 	
 	public static void main(String[] args) {
 		
 		String selection="";
 		int cash=0;
-		
-		//입력받기
-		displayVM();
 		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("사용자면 0, 관리자면 1을 입력하세요: ");  	int num = sc.nextInt();
+		User_VS_Manager check = new User_VS_Manager(); 			check.setNum(num);	System.out.print(check.user_VS_manager()); System.out.println("사용자매니저체크크크");		//관리자모드로 작동한다~웅앵 띄우셈. 여기서부터가 진짜 자판기 작동입니다.도
+		displayVM();
+		
+		System.out.print("금액과 선택 입력하세요: ");
 		cash = sc.nextInt();
 		selection = sc.next();
 		
@@ -27,6 +34,17 @@ public class VendingMachine {
 		
 	}
 	
+}
+
+class User_VS_Manager {
+	int user_VS_manager;
+	
+	void setNum(int num) {
+		this.user_VS_manager = num;
+	}
+	int user_VS_manager() {
+		return user_VS_manager;
+	}
 }
 
 
@@ -286,6 +304,7 @@ class Manufacture {
 		//CupManager cm = new CupManager();   //객체 중복생성X
 		System.out.print(cm.getOrderCup()); 			System.out.println("개의 컵을 받았다.");
 		System.out.print(cm.getCupCount());				System.out.println("개의 컵이 남아있다.\n");
+		User_VS_Manager check = new User_VS_Manager(); 			System.out.print(check.user_VS_manager()); System.out.println("사용자매니저체크크크");		//관리자모드로 작동한다~웅앵 띄우셈. 여기서부터가 진짜 자판기 작동입니다.도
 		
 		//IngredientManager im = new IngredientManager();
 		System.out.print(im.getOrderIngredient(this.selection));	System.out.println("개의 재료를 받았다.");
@@ -322,5 +341,6 @@ class CoffeeDispenser {
 		
 		//MoneyManager m = new MoneyManager();
 		m.getFinsihCoffee(selection, u);
+		
 	}
 }
