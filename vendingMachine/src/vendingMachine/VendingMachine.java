@@ -71,16 +71,16 @@ class Controller {
 		this.cash = cash;
 		this.selection = seletion;
 		
-		MoneyManager m = new MoneyManager();
+		MoneyManager m = new MoneyManager(4000);			//생성자-> 4000전달
 		//System.out.println("잔액있는지, 그리고 투입금액 이상인지 확인"); 		System.out.println(m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection));
 		
 		if (m.checkAvailibilityOfChangesAndAbovePrice(this.cash, this.selection)) {
 			m.updateBalance(cash, selection);
 			m.getBalance();		System.out.println();//자판기 잔돈 체크함. 
 			
-			CupManager cm = new CupManager();
-			IngredientManager im = new IngredientManager();
-			WaterManager wm = new WaterManager();
+			CupManager cm = new CupManager(10);		//생성자 -> 10전달
+			IngredientManager im = new IngredientManager(1, 5, 10);		//생성자 -> 1, 5, 10 전달
+			WaterManager wm = new WaterManager(1000);		//생성자 -> 1000(ml) 전달
 			//System.out.println("manager들(cm, im, wm)의 체크"); 			System.out.println(cm.checkAvailibility());			System.out.println(im.checkAvailibility(selection));			System.out.println(wm.checkAvailibility(selection));
 			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
 				//operation Indicatotor 불켜지게 하는 코드 추가
@@ -136,8 +136,13 @@ class OperationIndicator {		//TODO 클래스 다이어그램 내용인데 시퀀스에도 추가해�
 
 
 class MoneyManager {
-	int balance=4000;	//잔액
+	int balance;	//잔액
 	boolean availibility;
+	
+	//생성자
+	MoneyManager(int balance) {
+		this.balance=balance;
+	}
 	
 	boolean checkAvailibilityOfChangesAndAbovePrice(int cash, String selection) {		//잔액만 확인하는게 아니라 투입금액>=물품가액도 확인해야 & 마지막 else부분은 없는 문자열로 잘못 입력한겅미
 		if (selection.equals("SpecialCoffee")) {
@@ -186,7 +191,12 @@ class MoneyManager {
 
 
 class CupManager {
-	int cupCount = 10;
+	int cupCount;
+	
+	//생성자
+	CupManager(int cupCount){
+		this.cupCount=cupCount;
+	}
 	
 	boolean checkAvailibility() {
 		if (cupCount>=1) {System.out.print("cup 이용가능 / "); return true;}
@@ -205,9 +215,16 @@ class CupManager {
 
 
 class IngredientManager {
-	int SpecialCoffeeCount = 1;		//하나로 퉁쳐서 count하는 것은 말이 안돼서 추가했음.
-	int PlainCoffeeCount = 5;
-	int BlackCoffeeCount  = 10;
+	int SpecialCoffeeCount;		//하나로 퉁쳐서 count하는 것은 말이 안돼서 추가했음.
+	int PlainCoffeeCount;
+	int BlackCoffeeCount;
+	
+	//생성자
+	IngredientManager (int SpecialCoffeeCount, int PlainCoffeeCount, int BlackCoffeeCount) {
+		this.SpecialCoffeeCount = SpecialCoffeeCount;
+		this.PlainCoffeeCount = PlainCoffeeCount;
+		this.BlackCoffeeCount = BlackCoffeeCount;
+	}
 
 	boolean checkAvailibility(String selection) {
 		if (SpecialCoffeeCount>=1) {System.out.print("SpecialCoffee 이용가능 / "); return true;}
@@ -233,7 +250,12 @@ class IngredientManager {
 
 
 class WaterManager {
-	int amountOfWater=1000;	//ml단위
+	int amountOfWater;	//ml단위
+	
+	//생성자
+	WaterManager(int amountOfWater) {
+		this.amountOfWater = amountOfWater;
+	}
 	
 	boolean checkAvailibility(String selection) {
 		if (amountOfWater>=150) { System.out.println("물 이용가능\n"); return true;}
