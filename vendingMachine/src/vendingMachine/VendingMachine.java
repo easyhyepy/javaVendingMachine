@@ -101,7 +101,7 @@ class Controller {
 			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
 				Manufacture mf = new Manufacture();
 				System.out.print("Manufacture 체크: ");
-				mf.getRequestManufacture(this.selection, u, m);
+				mf.getRequestManufacture(this.selection, u, m ,cm, im, wm);
 			}	
 		}
 		
@@ -244,27 +244,26 @@ class WaterManager {
 
 class Manufacture {
 	String selection;
-	void getRequestManufacture(String selection, UserPanel u, MoneyManager m) {
+	void getRequestManufacture(String selection, UserPanel u, MoneyManager m, CupManager cm, IngredientManager im, WaterManager wm) {
 		this.selection=selection;
 		System.out.print("제조요청을 받았다. selection 출력: "); System.out.println(selection);
 		
-		CupManager cm = new CupManager();   //또 객체생성하면 안될 것 같음.
+		//CupManager cm = new CupManager();   //또 객체생성하면 안될 것 같음.
 		System.out.print(cm.getOrderCup()); 			System.out.println("개의 컵을 받았다.");
 		System.out.print(cm.getCupCount());				System.out.println("개의 컵이 남아있다.\n");
 		
-		IngredientManager im = new IngredientManager();
+		//IngredientManager im = new IngredientManager();
 		System.out.print(im.getOrderIngredient(this.selection));	System.out.println("개의 재료를 받았다.");
 		System.out.print(im.getSpecialCoffeeCount());	System.out.print("개 SpecialCoffee가 남아있다. / ");
 		System.out.print(im.getPlainCoffeeCount());		System.out.print("개 PlainCoffee가 남아있다. / ");
 		System.out.print(im.getBlackCoffeeCount());		System.out.println("개 BlackCoffee가 남아있다.\n");
 		
-		WaterManager wm = new WaterManager();
+		//WaterManager wm = new WaterManager();
 		System.out.print(wm.getOrderWater());			System.out.println("ml의 물을 받았다.");
 		System.out.print(wm.getAmountOfWater());		System.out.println("ml의 물이 WaterManger에 남아있다.\n");
 		
 		CoffeeDispenser cd = new CoffeeDispenser();
 		cd.getMixed(selection, cm.getOrderCup(), im.getOrderIngredient(this.selection), wm.getOrderWater(), u, m);		//selection만 있었는데 추가함
-		
 	}
 }
 
