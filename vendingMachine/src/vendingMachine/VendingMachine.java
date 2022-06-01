@@ -37,8 +37,8 @@ class UserPanel {
 	void accept(int cash, String selection) {
 		this.cash = cash;
 		this.selection = selection;
-		Controller c = new Controller();
-		c.getUserInput(this.cash, this.selection);
+		Controller c = new Controller();		  UserPanel u = new UserPanel();
+		c.getUserInput(this.cash, this.selection, u);
 		//System.out.print("c출력입니다: "); 		c.getCash();	System.out.print(" ");  	c.getSelection();		//TODO 의외로 accpet가 맨뒤에 출력되네???
 		
 	}
@@ -83,7 +83,7 @@ class Controller {
 	int cash;
 	String selection;	
 
-	void getUserInput(int cash, String seletion) {
+	void getUserInput(int cash, String seletion, UserPanel u) {
 		this.cash = cash;
 		this.selection = seletion;
 		
@@ -91,7 +91,7 @@ class Controller {
 		//System.out.println("잔액있는지, 그리고 투입금액 이상인지 확인"); 		System.out.println(m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection));
 		
 		if (m.checkAvailibilityOfChangesAndAbovePrice(this.cash, this.selection)) {
-			m.updateBalance(cash,selection);
+			m.updateBalance(cash, selection);
 			m.getBalance();		System.out.println();//자판기 잔돈 체크함. 
 			
 			CupManager cm = new CupManager();
@@ -101,7 +101,7 @@ class Controller {
 			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
 				Manufacture mf = new Manufacture();
 				System.out.print("Manufacture 체크: ");
-				mf.getRequestManufacture(this.selection);
+				mf.getRequestManufacture(this.selection, u);
 			}	
 		}
 		
@@ -244,7 +244,7 @@ class WaterManager {
 
 class Manufacture {
 	String selection;
-	void getRequestManufacture(String selection) {
+	void getRequestManufacture(String selection, UserPanel u) {
 		this.selection=selection;
 		System.out.print("제조요청을 받았다. selection 출력: "); System.out.println(selection);
 		
@@ -263,7 +263,7 @@ class Manufacture {
 		System.out.print(wm.getAmountOfWater());		System.out.println("ml의 물이 WaterManger에 남아있다.\n");
 		
 		CoffeeDispenser cd = new CoffeeDispenser();
-		cd.getMixed(selection, cm.getOrderCup(), im.getOrderIngredient(this.selection), wm.getOrderWater());		//selection만 있었는데 추가함
+		cd.getMixed(selection, cm.getOrderCup(), im.getOrderIngredient(this.selection), wm.getOrderWater(), u);		//selection만 있었는데 추가함
 		
 	}
 }
@@ -275,14 +275,14 @@ class CoffeeDispenser {
 	boolean ingredient = false;
 	boolean water = false;
 	
-	void getMixed(String selection, int cup, int ingredient, int water) { 
+	void getMixed(String selection, int cup, int ingredient, int water, UserPanel u) { 
 		this.cup = true;
 		this.ingredient =true;
 		this.water = true;
 		
 		System.out.println("\nCoffeeDispenser은 컵과 재료와 물을 받았고, 이를 섞는다.\n");
-		UserPanel U = new UserPanel();
-		U.receiveCoffee(selection);
+		//UserPanel U = new UserPanel();
+		u.receiveCoffee(selection);
 		
 		MoneyManager m = new MoneyManager();
 		m.getFinsihCoffee(selection);
