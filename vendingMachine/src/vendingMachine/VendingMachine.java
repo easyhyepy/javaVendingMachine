@@ -44,8 +44,8 @@ class UserPanel {
 	}
 
 	void setDisplayPharase(String displayPharase) { this.displayPharase = displayPharase; }
-	void getCash() { System.out.println(this.cash); }
-	void getSelection() { System.out.println(this.selection); }
+	int getCash() { System.out.println(this.cash); return this.cash;}
+	String getSelection() { System.out.println(this.selection); return this.selection;}
 	String getDisplayPharase() { return (this.displayPharase); }
 
 	
@@ -131,9 +131,6 @@ class MoneyManager {
 	int balance=4000;	//잔액
 	boolean availibility;
 	
-	//boolean notFinish = true;
-	//void setFinishFalse() {this.notFinish = false;}
-	
 	boolean checkAvailibilityOfChangesAndAbovePrice(int cash, String selection) {		//잔액만 확인하는게 아니라 투입금액>=물품가액도 확인해야 & 마지막 else부분은 없는 문자열로 잘못 입력한겅미
 		if (selection.equals("SpecialCoffee")) {
 			if(cash>=2000) {
@@ -160,22 +157,22 @@ class MoneyManager {
 		else if (selection.equals("PlainCoffee")) { balance += 1000; }
 		else if (selection.equals("BlackCoffee")) {  balance += 1500; }
 		
-		//아마 여기서 change 호출해야할듯.
-		
-		
-		//while (notFinish){  //MoneyManager의 notFinish와 setFinishiFalse()로 잔돈 반환을 늦추려했으나 실패. 그래서 걍 주석해두겠음. UserPanel의 setFinishFalse()도 마찬가지로 주석해둠
-		UserPanel U = new UserPanel();
-		if (selection.equals("SpecialCoffee")) { U.receiveChange(cash-2000); }
-		else if (selection.equals("PlainCoffee")) { U.receiveChange(cash-1000); }
-		else if (selection.equals("BlackCoffee")) { U.receiveChange(cash-1500); }
 	}
 	
 	int getBalance() {
 		System.out.print("자판기 잔고확인: ");
 		System.out.println(this.balance);
 		return this.balance;
-	}		//void에서 int로 바꿈: 컨트롤러의 m.getBalance();에서 작동됨
-		
+	}								//void에서 int로 바꿈: 컨트롤러의 m.getBalance();에서 작동됨
+	
+	void getFinsihCoffee(String selection) {
+		UserPanel U = new UserPanel();
+		int cash = U.getCash();
+		if (selection.equals("SpecialCoffee")) { U.receiveChange(cash-2000); }
+		else if (selection.equals("PlainCoffee")) { U.receiveChange(cash-1000); }
+		else if (selection.equals("BlackCoffee")) { U.receiveChange(cash-1500); }
+	}
+	
 }
 
 
@@ -287,5 +284,7 @@ class CoffeeDispenser {
 		UserPanel U = new UserPanel();
 		U.receiveCoffee(selection);
 		
+		MoneyManager m = new MoneyManager();
+		m.getFinsihCoffee(selection);
 	}
 }
