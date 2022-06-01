@@ -66,8 +66,8 @@ class UserPanel {
 		//m.setFinishFalse();
 	}
 	
-	void receiveChange(int change) { 
-		System.out.print(change); System.out.println("원의 잔돈이 UserPanel에 반환되었다.");
+	void receiveChange(int change) {
+		if (change!=0) {System.out.print(change); System.out.println("원의 잔돈이 UserPanel에 반환되었다.");}
 	}
 	
 }
@@ -92,7 +92,7 @@ class Controller {
 			m.getBalance();		System.out.println();//자판기 잔돈 체크함. 
 			
 			CupManager cm = new CupManager(10);		//생성자 -> 10전달
-			IngredientManager im = new IngredientManager(1, 5, 10);		//생성자 -> 1, 5, 10 전달
+			IngredientManager im = new IngredientManager(5, 10, 0);		//생성자 -> 1, 5, 10 전달이였는데 NoChange를 위해 5, 10, 0으로 함
 			WaterManager wm = new WaterManager(1000);		//생성자 -> 1000(ml) 전달
 			//System.out.println("manager들(cm, im, wm)의 체크"); 			System.out.println(cm.checkAvailibility());			System.out.println(im.checkAvailibility(selection));			System.out.println(wm.checkAvailibility(selection));
 			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
@@ -109,9 +109,11 @@ class Controller {
 		}
 		
 		else {
-			System.out.println("sys balance 업데이트 안됨. 즉 사용자가 입력한 금액 문제있는겨 -> 오류 메시지 띄워야");
-			m.getBalance();
-		}					//TODO 오류메시지
+			System.out.println("---NoChage---");
+			//System.out.println("sys balance 업데이트 안됨. 즉 사용자가 입력한 금액 문제있는겨 -> 오류 메시지 띄워야");
+			//m.getBalance();
+			u.receiveChange(cash);
+		}
 		
 	}
 	
@@ -193,7 +195,7 @@ class MoneyManager {
 		System.out.print("MoneyManager는 계산하여 balance를 업데이트 했다. 자판기의 업데이트된 잔고 확인: ");
 		System.out.println(this.balance);
 		return this.balance;
-	}								//void에서 int로 바꿈: 컨트롤러의 m.getBalance();에서 작동됨
+	}
 	
 	void getFinsihCoffee(String selection, UserPanel u) {
 		//UserPanel U = new UserPanel();	
@@ -216,7 +218,7 @@ class CupManager {
 	}
 	
 	boolean checkAvailibility() {
-		if (cupCount>=1) {System.out.print("cup 이용가능 / "); return true;}
+		if (cupCount>=1) {System.out.println("cup 이용가능"); return true;}
 		else {return false;}
 	}
 	int getOrderCup() {
@@ -244,10 +246,14 @@ class IngredientManager {
 	}
 
 	boolean checkAvailibility(String selection) {
-		if (SpecialCoffeeCount>=1) {System.out.print("SpecialCoffee 이용가능 / "); return true;}
-		else if (PlainCoffeeCount>=1) {System.out.print("PlainCoffee 이용가능 / "); return true;}
-		else if (BlackCoffeeCount>=1) {System.out.print("BlackCoffee 이용가능 / "); return true;}
-		else {return false;}
+		if ((selection.equals("SpecialCoffee"))&&(SpecialCoffeeCount>=1)) {System.out.print("SpecialCoffee 이용가능"); return true;}
+		else if ((selection.equals("PlainCoffee"))&&(PlainCoffeeCount>=1)) {System.out.print("PlainCoffee 이용가능"); return true;}
+		else if ((selection.equals("BlackCoffee"))&&(BlackCoffeeCount>=1)) {System.out.print("BlackCoffee 이용가능"); return true;}
+		
+		else {
+			System.out.println("---SoldOut---");
+			return false;
+		}	//오류메시지
 	}
 	
 	int getOrderIngredient(String selection) {
