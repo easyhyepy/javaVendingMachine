@@ -48,7 +48,7 @@ class UserPanel {
 		this.cash = cash;
 		this.selection = selection;
 		
-		System.out.println("\n\n\n\n왼쪽은 사용자가 보이는 자판기입니다.\t\t\t\t오른쪽은 사용자에게 보이지 않는 중간 동작 과정입니다.\n------------------------------------------------------------------------------------------------------------");
+		System.out.println("\n\n\n\n왼쪽은 사용자가 보는 자판기입니다.\t\t\t\t오른쪽은 사용자에게 보이지 않는 중간 동작 과정입니다.\n------------------------------------------------------------------------------------------------------------");
 		System.out.println("사용자가 돈을 넣고 선택했다.");
 		System.out.println("\t\t\t\t\t\t\tUserPanel은 돈을 받았다.");
 		Controller c = new Controller();		  //UserPanel u = new UserPanel();
@@ -91,6 +91,7 @@ class Controller {
 		//System.out.println("잔액있는지, 그리고 투입금액 이상인지 확인"); 		System.out.println(m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection));
 		
 		if (m.checkAvailibilityOfChangesAndAbovePrice(this.cash, this.selection)) {
+			
 			m.updateBalance(cash, selection);
 			m.getBalance();		System.out.println();//자판기 잔돈 체크함. 
 			
@@ -98,7 +99,11 @@ class Controller {
 			IngredientManager im = new IngredientManager(5, 10, 0);		//생성자 -> 1, 5, 10 전달이였는데 NoChange를 위해 5, 10, 0으로 함
 			WaterManager wm = new WaterManager(1000);		//생성자 -> 1000(ml) 전달
 			//System.out.println("manager들(cm, im, wm)의 체크"); 			System.out.println(cm.checkAvailibility());			System.out.println(im.checkAvailibility(selection));			System.out.println(wm.checkAvailibility(selection));
-			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
+			if (cm.checkAvailibility() && im.checkAvailibility(selection, u, cash) && wm.checkAvailibility(selection)) {
+				
+				//m.updateBalance(cash, selection);
+				//m.getBalance();		System.out.println();//자판기 잔돈 체크함. 		//위 주석 코드에서 바꾸..려다가 안바꿔도 되는 것 알게됨
+				
 				//operation Indicatotor 불켜지게 하는 코드 추가
 				OperationIndicator oi = new OperationIndicator();
 				oi.turnLED_On();
@@ -108,7 +113,9 @@ class Controller {
 				System.out.print("\t\t\t\t\t\t\tManufacture 체크: ");
 				mf.getRequestManufacture(this.selection, oi, u, m ,cm, im, wm);
 				
-			}	
+			}
+			
+			
 		}
 		
 		else {
@@ -249,13 +256,14 @@ class IngredientManager {
 		this.BlackCoffeeCount = BlackCoffeeCount;
 	}
 
-	boolean checkAvailibility(String selection) {
+	boolean checkAvailibility(String selection, UserPanel u, int cash) {
 		if ((selection.equals("SpecialCoffee"))&&(SpecialCoffeeCount>=1)) {System.out.println("\t\t\t\t\t\t\tSpecialCoffee 이용가능"); return true;}
 		else if ((selection.equals("PlainCoffee"))&&(PlainCoffeeCount>=1)) {System.out.println("\t\t\t\t\t\t\tPlainCoffee 이용가능"); return true;}
 		else if ((selection.equals("BlackCoffee"))&&(BlackCoffeeCount>=1)) {System.out.println("\t\t\t\t\t\t\tBlackCoffee 이용가능"); return true;}
 		
 		else {
 			System.out.println("---SoldOut---");
+			u.receiveChange(cash);
 			return false;
 		}	//오류메시지
 	}
