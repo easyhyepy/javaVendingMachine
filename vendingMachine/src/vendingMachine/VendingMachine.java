@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class VendingMachine {
 
 	static void displayVM() {
-		System.out.println( "---------------------------------------------\n| SpecialCoffee | PlainCoffee | BlackCoffee |\n|      2000     |    1000     |    1500     |\n---------------------------------------------\n\n\n금액과 선택 입력하세요:");
+		System.out.print( "---------------------------------------------\n| SpecialCoffee | PlainCoffee | BlackCoffee |\n|      2000     |    1000     |    1500     |\n---------------------------------------------\n\n\n금액과 선택 입력하세요:");
 	}
 	
 	public static void main(String[] args) {
@@ -39,7 +39,7 @@ class UserPanel {
 		this.selection = selection;
 		Controller c = new Controller();		  //UserPanel u = new UserPanel();
 		c.getUserInput(this.cash, this.selection, u);
-		//System.out.print("c출력입니다: "); 		c.getCash();	System.out.print(" ");  	c.getSelection();		//TODO 의외로 accpet가 맨뒤에 출력되네???
+		//System.out.print("c출력입니다: "); 		c.getCash();	System.out.print(" ");  	c.getSelection();
 		
 	}
 
@@ -57,22 +57,6 @@ class UserPanel {
 	
 	void receiveChange(int change) { 
 		System.out.print(change); System.out.println("원의 잔돈이 UserPanel에 반환되었다.");
-	}
-}
-
-
-
-class OperationIndicator {		//TODO 클래스 다이어그램 내용인데 시퀀스에도 추가해야함~
-	boolean LEDStatus = false;
-	
-	void turnLED_On() {
-		LEDStatus = true;
-	}
-	void turnLED_Off() {
-		LEDStatus = false;
-	}
-	boolean getLEDStatus() {
-		return this.LEDStatus;
 	}
 }
 
@@ -99,9 +83,15 @@ class Controller {
 			WaterManager wm = new WaterManager();
 			//System.out.println("manager들(cm, im, wm)의 체크"); 			System.out.println(cm.checkAvailibility());			System.out.println(im.checkAvailibility(selection));			System.out.println(wm.checkAvailibility(selection));
 			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
+				//operation Indicatotor 불켜지게 하는 코드 추가
+				OperationIndicator oi = new OperationIndicator();
+				oi.turnLED_On();
+				
+				
 				Manufacture mf = new Manufacture();
 				System.out.print("Manufacture 체크: ");
-				mf.getRequestManufacture(this.selection, u, m ,cm, im, wm);
+				mf.getRequestManufacture(this.selection, oi, u, m ,cm, im, wm);
+				
 			}	
 		}
 		
@@ -123,6 +113,24 @@ class Controller {
 		return this.selection;
 	}
 	
+}
+
+
+
+class OperationIndicator {		//TODO 클래스 다이어그램 내용인데 시퀀스에도 추가해야함~
+	boolean LEDStatus = false;
+	
+	void turnLED_On() {
+		System.out.println("LED 불이 켜졌다."); System.out.println();
+		LEDStatus = true;
+	}
+	void turnLED_Off() {
+		System.out.println("LED 불이 꺼졌다."); System.out.println();
+		LEDStatus = false;
+	}
+	boolean getLEDStatus() {
+		return this.LEDStatus;
+	}
 }
 
 
@@ -181,7 +189,7 @@ class CupManager {
 	int cupCount = 10;
 	
 	boolean checkAvailibility() {
-		if (cupCount>=1) return true;
+		if (cupCount>=1) {System.out.print("cup 이용가능 / "); return true;}
 		else {return false;}
 	}
 	int getOrderCup() {
@@ -202,9 +210,9 @@ class IngredientManager {
 	int BlackCoffeeCount  = 10;
 
 	boolean checkAvailibility(String selection) {
-		if (SpecialCoffeeCount>=1) return true;
-		else if (PlainCoffeeCount>=1) return true;
-		else if (BlackCoffeeCount>=1) return true;
+		if (SpecialCoffeeCount>=1) {System.out.print("SpecialCoffee 이용가능 / "); return true;}
+		else if (PlainCoffeeCount>=1) {System.out.print("PlainCoffee 이용가능 / "); return true;}
+		else if (BlackCoffeeCount>=1) {System.out.print("BlackCoffee 이용가능 / "); return true;}
 		else {return false;}
 	}
 	
@@ -228,7 +236,7 @@ class WaterManager {
 	int amountOfWater=1000;	//ml단위
 	
 	boolean checkAvailibility(String selection) {
-		if (amountOfWater>=150) return true;		//레시피 따라서 해도 될듯
+		if (amountOfWater>=150) { System.out.println("물 이용가능\n"); return true;}
 		else {return false;}
 	}
 	int getOrderWater() {
@@ -244,11 +252,11 @@ class WaterManager {
 
 class Manufacture {
 	String selection;
-	void getRequestManufacture(String selection, UserPanel u, MoneyManager m, CupManager cm, IngredientManager im, WaterManager wm) {
+	void getRequestManufacture(String selection, OperationIndicator oi, UserPanel u, MoneyManager m, CupManager cm, IngredientManager im, WaterManager wm) {
 		this.selection=selection;
-		System.out.print("제조요청을 받았다. selection 출력: "); System.out.println(selection);
+		System.out.print("제조요청을 받았다 -> selection 출력: "); System.out.println(selection);
 		
-		//CupManager cm = new CupManager();   //또 객체생성하면 안될 것 같음.
+		//CupManager cm = new CupManager();   //객체 중복생성X
 		System.out.print(cm.getOrderCup()); 			System.out.println("개의 컵을 받았다.");
 		System.out.print(cm.getCupCount());				System.out.println("개의 컵이 남아있다.\n");
 		
@@ -263,7 +271,7 @@ class Manufacture {
 		System.out.print(wm.getAmountOfWater());		System.out.println("ml의 물이 WaterManger에 남아있다.\n");
 		
 		CoffeeDispenser cd = new CoffeeDispenser();
-		cd.getMixed(selection, cm.getOrderCup(), im.getOrderIngredient(this.selection), wm.getOrderWater(), u, m);		//selection만 있었는데 추가함
+		cd.getMixed(selection, cm.getOrderCup(), im.getOrderIngredient(this.selection), wm.getOrderWater(), oi, u, m);		//selection만 있었는데 추가함
 	}
 }
 
@@ -274,12 +282,15 @@ class CoffeeDispenser {
 	boolean ingredient = false;
 	boolean water = false;
 	
-	void getMixed(String selection, int cup, int ingredient, int water, UserPanel u, MoneyManager m) { 
+	void getMixed(String selection, int cup, int ingredient, int water, OperationIndicator oi, UserPanel u, MoneyManager m) { 
 		this.cup = true;
 		this.ingredient =true;
 		this.water = true;
-		
 		System.out.println("\nCoffeeDispenser은 컵과 재료와 물을 받았고, 이를 섞는다.\n");
+		
+		oi.turnLED_Off();
+		
+		
 		//UserPanel U = new UserPanel();
 		u.receiveCoffee(selection);
 		
