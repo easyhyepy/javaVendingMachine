@@ -28,22 +28,11 @@ public class VendingMachine {
 		
 		//User가 돈과 선택을 넣음.
 		UserPanel U = new UserPanel();
-		U.accept(cash, selection, U);
+		U.accept(cash, selection, U);	
 		//System.out.println("U출력입니다"); U.getCash();  U.getSelection(); //확인 완료
 		
 	}
 	
-}
-
-class User_VS_Manager {
-	int user_VS_manager;
-	
-	void setNum(int num) {
-		this.user_VS_manager = num;
-	}
-	int user_VS_manager() {
-		return user_VS_manager;
-	}
 }
 
 
@@ -58,6 +47,7 @@ class UserPanel {
 	void accept(int cash, String selection, UserPanel u) {			//UserPanel u로서 객체를 '새로 만드는게 아니라' 전달받아서 계산함.
 		this.cash = cash;
 		this.selection = selection;
+		System.out.println("사용자가 돈을 넣고 선택했다. UserPanel은 돈을 받았다.");
 		Controller c = new Controller();		  //UserPanel u = new UserPanel();
 		c.getUserInput(this.cash, this.selection, u);
 		//System.out.print("c출력입니다: "); 		c.getCash();	System.out.print(" ");  	c.getSelection();
@@ -93,6 +83,7 @@ class Controller {
 		this.cash = cash;
 		this.selection = seletion;
 		
+		System.out.println("UserPanel이 돈을 Controller에게 전달했다. Controller은 돈을 받았다.");
 		MoneyManager m = new MoneyManager(4000);			//생성자-> 4000전달
 		//System.out.println("잔액있는지, 그리고 투입금액 이상인지 확인"); 		System.out.println(m.checkAvailibilityOfChangesAndAboveprice(this.cash, this.selection));
 		
@@ -184,6 +175,10 @@ class MoneyManager {
 		}
 		else availibility=false;	//선택 잘못한 경우
 		
+		System.out.print("Controller은 MoneyManager에게 사용자의 투입금액이 옳은지, 거슬러줄 잔돈이 있는지 확인한다. MoneyManager은 ");
+		if ( availibility==true ) System.out.println("true라고 알려줬다.");
+		else System.out.println("false라고 알려줬다.");
+		
 		return availibility;
 	}
 	
@@ -195,7 +190,7 @@ class MoneyManager {
 	}
 	
 	int getBalance() {
-		System.out.print("자판기 잔고확인: ");
+		System.out.print("MoneyManager는 계산하여 balance를 업데이트 했다. 자판기의 업데이트된 잔고 확인: ");
 		System.out.println(this.balance);
 		return this.balance;
 	}								//void에서 int로 바꿈: 컨트롤러의 m.getBalance();에서 작동됨
@@ -303,7 +298,6 @@ class Manufacture {
 		//CupManager cm = new CupManager();   //객체 중복생성X
 		System.out.print(cm.getOrderCup()); 			System.out.println("개의 컵을 받았다.");
 		System.out.print(cm.getCupCount());				System.out.println("개의 컵이 남아있다.\n");
-		User_VS_Manager check = new User_VS_Manager(); 			System.out.print(check.user_VS_manager()); System.out.println("사용자매니저체크크크");		//관리자모드로 작동한다~웅앵 띄우셈. 여기서부터가 진짜 자판기 작동입니다.도
 		
 		//IngredientManager im = new IngredientManager();
 		System.out.print(im.getOrderIngredient(this.selection));	System.out.println("개의 재료를 받았다.");
