@@ -19,7 +19,7 @@ public class VendingMachine {
 		
 		//User가 돈과 선택을 넣음.
 		UserPanel U = new UserPanel();
-		U.accept(cash, selection);
+		U.accept(cash, selection, U);
 		//System.out.println("U출력입니다"); U.getCash();  U.getSelection(); //확인 완료
 		
 	}
@@ -34,18 +34,18 @@ class UserPanel {
 	int change;  //잔돈
 	String displayPharase = "화면출력입니다";	//화면 출력
 	
-	void accept(int cash, String selection) {
+	void accept(int cash, String selection, UserPanel u) {			//UserPanel u로서 객체를 '새로 만드는게 아니라' 전달받아서 계산함.
 		this.cash = cash;
 		this.selection = selection;
-		Controller c = new Controller();		  UserPanel u = new UserPanel();
+		Controller c = new Controller();		  //UserPanel u = new UserPanel();
 		c.getUserInput(this.cash, this.selection, u);
 		//System.out.print("c출력입니다: "); 		c.getCash();	System.out.print(" ");  	c.getSelection();		//TODO 의외로 accpet가 맨뒤에 출력되네???
 		
 	}
 
 	void setDisplayPharase(String displayPharase) { this.displayPharase = displayPharase; }
-	int getCash() { System.out.println(this.cash); return this.cash;}
-	String getSelection() { System.out.println(this.selection); return this.selection;}
+	int getCash() { return this.cash;}
+	String getSelection() { return this.selection;}
 	String getDisplayPharase() { return (this.displayPharase); }
 
 	
@@ -101,7 +101,7 @@ class Controller {
 			if (cm.checkAvailibility() && im.checkAvailibility(selection) && wm.checkAvailibility(selection)) {
 				Manufacture mf = new Manufacture();
 				System.out.print("Manufacture 체크: ");
-				mf.getRequestManufacture(this.selection, u);
+				mf.getRequestManufacture(this.selection, u, m);
 			}	
 		}
 		
@@ -165,12 +165,12 @@ class MoneyManager {
 		return this.balance;
 	}								//void에서 int로 바꿈: 컨트롤러의 m.getBalance();에서 작동됨
 	
-	void getFinsihCoffee(String selection) {
-		UserPanel U = new UserPanel();
-		int cash = U.getCash();
-		if (selection.equals("SpecialCoffee")) { U.receiveChange(cash-2000); }
-		else if (selection.equals("PlainCoffee")) { U.receiveChange(cash-1000); }
-		else if (selection.equals("BlackCoffee")) { U.receiveChange(cash-1500); }
+	void getFinsihCoffee(String selection, UserPanel u) {
+		//UserPanel U = new UserPanel();	
+		int cash = u.getCash();
+		if (selection.equals("SpecialCoffee")) { u.receiveChange(cash-2000); }
+		else if (selection.equals("PlainCoffee")) { u.receiveChange(cash-1000); }
+		else if (selection.equals("BlackCoffee")) { u.receiveChange(cash-1500); }
 	}
 	
 }
@@ -244,7 +244,7 @@ class WaterManager {
 
 class Manufacture {
 	String selection;
-	void getRequestManufacture(String selection, UserPanel u) {
+	void getRequestManufacture(String selection, UserPanel u, MoneyManager m) {
 		this.selection=selection;
 		System.out.print("제조요청을 받았다. selection 출력: "); System.out.println(selection);
 		
@@ -263,7 +263,7 @@ class Manufacture {
 		System.out.print(wm.getAmountOfWater());		System.out.println("ml의 물이 WaterManger에 남아있다.\n");
 		
 		CoffeeDispenser cd = new CoffeeDispenser();
-		cd.getMixed(selection, cm.getOrderCup(), im.getOrderIngredient(this.selection), wm.getOrderWater(), u);		//selection만 있었는데 추가함
+		cd.getMixed(selection, cm.getOrderCup(), im.getOrderIngredient(this.selection), wm.getOrderWater(), u, m);		//selection만 있었는데 추가함
 		
 	}
 }
@@ -275,7 +275,7 @@ class CoffeeDispenser {
 	boolean ingredient = false;
 	boolean water = false;
 	
-	void getMixed(String selection, int cup, int ingredient, int water, UserPanel u) { 
+	void getMixed(String selection, int cup, int ingredient, int water, UserPanel u, MoneyManager m) { 
 		this.cup = true;
 		this.ingredient =true;
 		this.water = true;
@@ -284,7 +284,7 @@ class CoffeeDispenser {
 		//UserPanel U = new UserPanel();
 		u.receiveCoffee(selection);
 		
-		MoneyManager m = new MoneyManager();
-		m.getFinsihCoffee(selection);
+		//MoneyManager m = new MoneyManager();
+		m.getFinsihCoffee(selection, u);
 	}
 }
