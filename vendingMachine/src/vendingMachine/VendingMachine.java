@@ -22,7 +22,6 @@ public class VendingMachine {
 		U.accept(cash, selection);
 		//System.out.println("U출력입니다"); U.getCash();  U.getSelection(); //확인 완료
 		
-		U.receiveCoffee(selection);
 	}
 	
 }
@@ -165,14 +164,17 @@ class MoneyManager {
 		
 		
 		//while (notFinish){  //MoneyManager의 notFinish와 setFinishiFalse()로 잔돈 반환을 늦추려했으나 실패. 그래서 걍 주석해두겠음. UserPanel의 setFinishFalse()도 마찬가지로 주석해둠
-		UserPanel u = new UserPanel();
-
-		if (selection.equals("SpecialCoffee")) { u.receiveChange(cash-2000); }
-		else if (selection.equals("PlainCoffee")) { u.receiveChange(cash-1000); }
-		else if (selection.equals("BlackCoffee")) { u.receiveChange(cash-1500); }
+		UserPanel U = new UserPanel();
+		if (selection.equals("SpecialCoffee")) { U.receiveChange(cash-2000); }
+		else if (selection.equals("PlainCoffee")) { U.receiveChange(cash-1000); }
+		else if (selection.equals("BlackCoffee")) { U.receiveChange(cash-1500); }
 	}
 	
-	int getBalance() { System.out.print("자판기 잔고확인: "); System.out.println(this.balance); return this.balance;}		//void에서 int로 바꿈: 컨트롤러의 m.getBalance();에서 작동됨
+	int getBalance() {
+		System.out.print("자판기 잔고확인: ");
+		System.out.println(this.balance);
+		return this.balance;
+	}		//void에서 int로 바꿈: 컨트롤러의 m.getBalance();에서 작동됨
 		
 }
 
@@ -282,8 +284,8 @@ class CoffeeDispenser {
 		this.water = true;
 		
 		System.out.println("\nCoffeeDispenser은 컵과 재료와 물을 받았고, 이를 섞는다.\n");
-		//UserPanel u = new UserPanel(); 	-> 맞는지 모르겠는데 main으로 코드 옮겼더니 출력순서 똑같아.
-		//u.receiveCoffee(selection);
+		UserPanel U = new UserPanel();
+		U.receiveCoffee(selection);
 		
 	}
 }
