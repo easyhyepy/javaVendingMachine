@@ -18,8 +18,7 @@ public class VendingMachine {
 		String selection="";
 		int cash=0;
 		Scanner sc = new Scanner(System.in);
-		
-		
+
 		displayVM();
 		
 		System.out.print("금액과 선택 입력하세요: ");
@@ -29,7 +28,6 @@ public class VendingMachine {
 		//User가 돈과 선택을 넣음.
 		UserPanel U = new UserPanel();
 		U.accept(cash, selection, U);	
-		//System.out.println("U출력입니다"); U.getCash();  U.getSelection(); //확인 완료
 		
 	}
 	
@@ -44,35 +42,44 @@ class UserPanel {
 	int change;  //잔돈
 	String displayPharase = "";
 	
-	void accept(int cash, String selection, UserPanel u) {			//UserPanel u로서 객체를 '새로 만드는게 아니라' 전달받아서 계산함.
+	
+	public void accept(int cash, String selection, UserPanel u) {
+		//UserPanel u로서 객체를 '새로 만드는게 아니라' 전달받아서 계산함.
+		
 		this.cash = cash;
 		this.selection = selection;
 		
-		System.out.println("\n\n\n\n왼쪽은 사용자가 보는 자판기입니다.\t\t\t\t오른쪽은 사용자에게 보이지 않는 중간 동작 과정입니다."
-				+ "\n------------------------------------------------------------------------------------------------------------");
+		System.out.println("\n\n\n\n왼쪽은 사용자가 보는 자판기입니다."
+				+ "\t\t\t\t오른쪽은 사용자에게 보이지 않는 중간 동작 과정입니다. 원한다면 관리자는 볼 수 있습니다."
+				+ "\n----------------------------------------------------------------"
+				+ "------------------------------------------------------------------");
 		System.out.println("사용자가 돈을 넣고 선택했다.");
 		System.out.println("\t\t\t\t\t\t\tUserPanel은 돈을 받았다.");
-		Controller c = new Controller();		  //UserPanel u = new UserPanel();
+		
+		System.out.println("\t\t\t\t\t\t\tUserPanel이 돈을 Controller에게 전달한다.");
+		Controller c = new Controller();
 		c.getUserInput(this.cash, this.selection, u);
-		//System.out.print("c출력입니다: "); 		c.getCash();	System.out.print(" ");  	c.getSelection();
 		
 	}
 
-	void setDisplayPharase(String displayPharase) { this.displayPharase = displayPharase; }
+	void setDisplayPharase(String displayPharase) {
+		this.displayPharase = displayPharase;
+	}
+	
 	int getCash() { return this.cash;}
 	String getSelection() { return this.selection;}
 	String getDisplayPharase() { return (this.displayPharase); }
 
 	void receiveCoffee(String selection) {
 		System.out.print(selection); System.out.println(" 커피가 나왔다.");
-		//MoneyManager m = new MoneyManager();
-		//m.setFinishFalse();
 	}
 	
 	void receiveChange(int change) {
-		if (change!=0) {System.out.print(change); System.out.println("원의 잔돈이 UserPanel에 반환되었다.");}
+		if (change!=0) {
+			System.out.print(change);
+			System.out.println("원의 잔돈이 UserPanel에 반환되었다.");
+		}
 	}
-	
 }
 
 
@@ -86,28 +93,27 @@ class Controller {
 		this.cash = cash;
 		this.selection = seletion;
 		
-		System.out.println("\t\t\t\t\t\t\tUserPanel이 돈을 Controller에게 전달했다. Controller은 돈을 받았다.");
-		MoneyManager m = new MoneyManager(4000);			//생성자-> 4000전달
+		System.out.println("\n\t\t\t\t\t\t\tController은 UserPanel로부터 돈을 받았다.");
+		
+		//생성자-> 4000전달
+		MoneyManager m = new MoneyManager(4000);			
 		
 		
 		if (m.checkAvailibilityOfChangesAndAbovePrice(this.cash, this.selection)) {
-			
 			m.updateBalance(cash, selection);
 			m.getBalance();		System.out.println();//자판기 잔돈 체크함. 
 			
-			CupManager cm = new CupManager(10);		//생성자 -> 10전달
-			IngredientManager im = new IngredientManager(5, 10, 0);		//생성자 -> 1, 5, 10 전달이였는데 NoChange를 위해 5, 10, 0으로 함
-			WaterManager wm = new WaterManager(1000);		//생성자 -> 1000(ml) 전달
+			//생성자 -> 10전달
+			CupManager cm = new CupManager(10);
+			//생성자 5, 10, 0으로 함-> NoChange를 위해 임의로 0으로 설정한 BlackCoffee
+			IngredientManager im = new IngredientManager(5, 10, 0);
+			//생성자 -> 1000(ml) 전달
+			WaterManager wm = new WaterManager(1000);
 			
 			if (cm.checkAvailibility() && im.checkAvailibility(selection, u, cash) && wm.checkAvailibility(selection)) {
-				
-				//m.updateBalance(cash, selection);
-				//m.getBalance();
-				
-				//operation Indicatotor 불켜지게 하는 코드 추가
+				//모든 조건(Availibility)이 충족되었을 때, operation Indicatotor 불켜지게 함
 				OperationIndicator oi = new OperationIndicator();
 				oi.turnLED_On();
-				
 				
 				Manufacture mf = new Manufacture();
 				System.out.print("\t\t\t\t\t\t\tManufacture 체크: ");
@@ -182,9 +188,9 @@ class MoneyManager {
 		}
 		else availibility=false;	//선택 잘못한 경우
 		
-		System.out.print("\t\t\t\t\t\t\tController은 MoneyManager에게 사용자의 투입금액이 옳은지, 거슬러줄 잔돈이 있는지 확인한다. MoneyManager은 ");
-		if ( availibility==true ) System.out.println("true라고 알려줬다.");
-		else System.out.println("false라고 알려줬다.");
+		System.out.println("\t\t\t\t\t\t\tController은 MoneyManager에게 사용자의 투입금액이 옳은지, 거슬러줄 잔돈이 있는지 확인한다. ");
+		if ( availibility==true ) System.out.println("\t\t\t\t\t\t\tMoneyManager은 true라고 알려줬다.");
+		else System.out.println("\t\t\t\t\t\t\tMoneyManager은 false라고 알려줬다.");
 		
 		return availibility;
 	}
@@ -197,7 +203,8 @@ class MoneyManager {
 	}
 	
 	int getBalance() {
-		System.out.print("\t\t\t\t\t\t\tMoneyManager는 계산하여 balance를 업데이트 했다. 자판기의 업데이트된 잔고 확인: ");
+		System.out.println("\t\t\t\t\t\t\tMoneyManager는 계산하여 balance를 업데이트 했다.");
+		System.out.print("\t\t\t\t\t\t\t[관리자는 확인 가능] 자판기의 업데이트된 잔고 확인: ");
 		System.out.println(this.balance);
 		return this.balance;
 	}
@@ -222,7 +229,7 @@ class CupManager {
 	}
 	
 	boolean checkAvailibility() {
-		if (cupCount>=1) {System.out.println("\t\t\t\t\t\t\tcup 이용가능"); return true;}
+		if (cupCount>=1) {System.out.println("\t\t\t\t\t\t\t[관리자는 확인 가능] cup 이용가능"); return true;}
 		else {return false;}
 	}
 	int getOrderCup() {
@@ -250,20 +257,24 @@ class IngredientManager {
 		this.BlackCoffeeCount = BlackCoffeeCount;
 	}
 
-	boolean checkAvailibility(String selection, UserPanel u, int cash) {
-		if ((selection.equals("SpecialCoffee"))&&(SpecialCoffeeCount>=1)) {System.out.println("\t\t\t\t\t\t\tSpecialCoffee 이용가능"); return true;}
-		else if ((selection.equals("PlainCoffee"))&&(PlainCoffeeCount>=1)) {System.out.println("\t\t\t\t\t\t\tPlainCoffee 이용가능"); return true;}
-		else if ((selection.equals("BlackCoffee"))&&(BlackCoffeeCount>=1)) {System.out.println("\t\t\t\t\t\t\tBlackCoffee 이용가능"); return true;}
+	boolean checkAvailibility(String selection, UserPanel u, int cash) {	
+		if ( ((selection.equals("SpecialCoffee"))&&(SpecialCoffeeCount>=1))
+				| ((selection.equals("PlainCoffee"))&&(PlainCoffeeCount>=1))
+				| ((selection.equals("BlackCoffee"))&&(BlackCoffeeCount>=1)) ) {
+			System.out.println("\t\t\t\t\t\t\t[관리자는 확인 가능] " + selection + " 이용가능");
+			return true;
+		}
 		
 		else {
 			System.out.println("---SoldOut---");
 			u.receiveChange(cash);
 			return false;
-		}	//오류메시지
+		}
 	}
 	
 	int getOrderIngredient(String selection) {
 		System.out.println("\t\t\t\t\t\t\tIngredientManager는 Manufacture에게 Ingredient을 준다.");
+		
 		if (selection.equals("SpecialCoffee")) { SpecialCoffeeCount--; }
 		else if (selection.equals("PlainCoffee")) { PlainCoffeeCount--; }
 		else if (selection.equals("BlackCoffee")) { BlackCoffeeCount--; }
@@ -287,9 +298,15 @@ class WaterManager {
 	}
 	
 	boolean checkAvailibility(String selection) {
-		if (amountOfWater>=150) { System.out.println("\t\t\t\t\t\t\t물 이용가능\n"); return true;}
-		else {return false;}
+		if (amountOfWater>=150) {
+			System.out.println("\t\t\t\t\t\t\t[관리자는 확인 가능] 물 이용가능\n");
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
+	
 	int getOrderWater() {
 		amountOfWater-=150;
 		return 150;
@@ -305,27 +322,25 @@ class Manufacture {
 	String selection;
 	void getRequestManufacture(String selection, OperationIndicator oi, UserPanel u, MoneyManager m, CupManager cm, IngredientManager im, WaterManager wm) {
 		this.selection=selection;
-		System.out.print("제조요청을 받았다 -> selection 출력: "); System.out.println(selection);
+		System.out.println("Manufacture은 " + selection + "를 제조하라는 요청을 받았다.");
 		
-		//CupManager cm = new CupManager();   //객체 중복생성X
-		//System.out.print(cm.getOrderCup()); 			System.out.println("개의 컵을 받았다.");
-		System.out.print("\t\t\t\t\t\t\t");
-		System.out.print(cm.getCupCount());				System.out.println("개의 컵이 남아있다.\n");
+		System.out.println("\t\t\t\t\t\t\t1개의 컵과, 1개의 "+ selection + "과 150ml의 물을 이용해여 제조합니다.\n");
+		cm.getOrderCup();
+		im.getOrderIngredient(selection);
+		wm.getOrderWater();
 		
-		//IngredientManager im = new IngredientManager();
-		//System.out.print(im.getOrderIngredient(this.selection));	System.out.println("개의 재료를 받았다.");
-		System.out.print("\t\t\t\t\t\t\t");
-		System.out.print(im.getSpecialCoffeeCount());	System.out.print("개 SpecialCoffee가 남아있다. / ");
-		System.out.print(im.getPlainCoffeeCount());		System.out.print("개 PlainCoffee가 남아있다. / ");
-		System.out.print(im.getBlackCoffeeCount());		System.out.println("개 BlackCoffee가 남아있다.\n");
+		System.out.println("\t\t\t\t\t\t\t\n[관리자는 확인 가능] " + cm.getCupCount() + "개의 컵이 남아있다.");
 		
-		//WaterManager wm = new WaterManager();
-		//System.out.print(wm.getOrderWater());			System.out.println("ml의 물을 받았다.");
-		System.out.print("\t\t\t\t\t\t\t");
-		System.out.print(wm.getAmountOfWater());		System.out.println("ml의 물이 WaterManger에 남아있다.\n");
+
+		System.out.print("\t\t\t\t\t\t\t[관리자는 확인 가능] " 
+				+ im.getSpecialCoffeeCount() + "개 SpecialCoffee가 남아있다. / ");
+		System.out.print(im.getPlainCoffeeCount() + "개 PlainCoffee가 남아있다. / ");
+		System.out.println(im.getBlackCoffeeCount() + "개 BlackCoffee가 남아있다.");
+		
+		System.out.print("\t\t\t\t\t\t\t[관리자는 확인 가능] " + wm.getAmountOfWater() + "ml의 물이 WaterManger에 남아있다.\n");
 		
 		CoffeeDispenser cd = new CoffeeDispenser();
-		cd.getMixed(selection, cm.getOrderCup(), im.getOrderIngredient(this.selection), wm.getOrderWater(), oi, u, m);		//selection만 있었는데 추가함
+		cd.getMixed(selection, cm.getOrderCup(), im.getOrderIngredient(this.selection), wm.getOrderWater(), oi, u, m);
 	}
 }
 
@@ -344,10 +359,8 @@ class CoffeeDispenser {
 		
 		oi.turnLED_Off();		
 		
-		//UserPanel U = new UserPanel();
 		u.receiveCoffee(selection);
 		
-		//MoneyManager m = new MoneyManager();
 		m.getFinsihCoffee(selection, u);
 		
 	}
