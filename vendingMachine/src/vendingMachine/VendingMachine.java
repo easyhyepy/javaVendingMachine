@@ -76,7 +76,7 @@ class UserPanel {
 	
 	public void receiveChange(int change) {
 		if (change!=0) {
-			System.out.println("\t\t\t\t\t\t\tMoneyManager UserPanel에 잔돈을 전달한다.");
+			System.out.println("\t\t\t\t\t\t\tMoneyManager은 UserPanel에 잔돈을 전달한다.");
 			System.out.print(change);
 			System.out.println("원의 잔돈이 UserPanel에 반환되었다.");
 		}
