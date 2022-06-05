@@ -71,14 +71,13 @@ class UserPanel {
 	public String getDisplayPharase() { return (this.displayPharase); }
 
 	public void receiveCoffee(String selection) {
-		System.out.print(selection); System.out.println(" 커피가 나왔다.");
+		System.out.println(selection + " 커피가 나왔다.");
 	}
 	
 	public void receiveChange(int change) {
 		if (change!=0) {
 			System.out.println("\t\t\t\t\t\t\tMoneyManager은 UserPanel에 잔돈을 전달한다.");
-			System.out.print(change);
-			System.out.println("원의 잔돈이 UserPanel에 반환되었다.");
+			System.out.println(change + "원의 잔돈이 UserPanel에 반환되었다.");
 		}
 	}
 }
